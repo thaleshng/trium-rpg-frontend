@@ -14,7 +14,7 @@ type UserType = "MESTRE" | "PLAYER";
 
 export function LoginPage() {
 	const { setSystem } = useThemeContext();
-    const { login, user } = useAuth();
+    const { login, user, logout } = useAuth();
 	const navigate = useNavigate();
     const [selectedSystem, setSelectedSystem] = useState<SystemThemeKey | null>(null);
 
@@ -29,6 +29,13 @@ export function LoginPage() {
             setSystem("neutral");
         }
     }, [user]);
+
+	useEffect(() => {
+		if (user) {
+			logout();
+		}
+		setSystem("neutral");
+	}, []);
 
 	function handleSystemChange(event: React.ChangeEvent<HTMLSelectElement>) {
 		const systemKey = event.target.value as SystemThemeKey;
@@ -45,34 +52,47 @@ export function LoginPage() {
 			return;
 		}
 
-        if (!selectedSystem) {
-            setError("Selecione um sistema para continuar.");
-            return;
-        }
+		if (!selectedSystem) {
+			setError("Selecione um sistema para continuar.");
+			return;
+		}
 
 		setIsSubmitting(true);
 
 		try {
 			const loggedUser = await login(email, senha);
 
+			// --- ERRO DE TIPO DE USUÁRIO ---
 			if (loggedUser.tipo !== userType) {
 				if (loggedUser.tipo === "MESTRE") {
-					setError(
-						"Você é Mestre. Selecione 'Entrar como MESTRE' para continuar."
-					);
+					// mensagem igual ao print 2
+					setError("Você é Mestre. Selecione 'Entrar como MESTRE'.");
 				} else {
 					setError("Você é Player. Não pode entrar como Mestre.");
 				}
-				return;
+
+				return; // <- aqui pode usar return normalmente
 			}
 
+			// --- LOGIN OK ---
 			navigate("/campanhas");
-		} catch (err: unknown) {
-			const message =
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				(err as any)?.response?.data?.message ??
-				"Erro ao fazer login. Verifique suas credenciais.";
-			setError(message);
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (err: any) {
+
+			// --- SENHA ERRADA / CREDENCIAIS INVÁLIDAS ----
+			if (err?.response?.status === 401) {
+				setError("Erro ao fazer login. Verifique suas credenciais.");
+			}
+			// --- ERRO COM MENSAGEM DA API ---
+			else if (err?.response?.data?.message) {
+				setError(err.response.data.message);
+			}
+			// --- ERRO GENÉRICO ---
+			else {
+				setError("Erro ao fazer login. Tente novamente.");
+			}
+
 		} finally {
 			setIsSubmitting(false);
 		}
