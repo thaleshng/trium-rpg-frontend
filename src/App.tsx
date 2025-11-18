@@ -1,8 +1,9 @@
-// src/App.tsx
-
 import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { PrivateRoute } from "./router/PrivateRoute";
+import { AppLayout } from "./layout/AppLayout";
+import { CampanhasPage } from "./pages/Campanha/CampanhasPage";
+import { CampanhaDetalhesPage } from "./pages/Campanha/CampanhaDetalhesPage";
 
 export default function App() {
   return (
@@ -10,19 +11,23 @@ export default function App() {
       <Route path="/" element={<LoginPage />} />
 
       <Route
-        path="/mestre"
+        path="/campanhas"
         element={
           <PrivateRoute>
-            <div>Painel do Mestre</div>
+            <AppLayout>
+              <CampanhasPage />
+            </AppLayout>
           </PrivateRoute>
         }
       />
 
       <Route
-        path="/player"
+        path="/campanhas/:id"
         element={
           <PrivateRoute>
-            <div>Painel do Player</div>
+            <AppLayout>
+              <CampanhaDetalhesPage />
+            </AppLayout>
           </PrivateRoute>
         }
       />

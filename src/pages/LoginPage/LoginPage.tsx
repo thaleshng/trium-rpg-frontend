@@ -14,7 +14,7 @@ type UserType = "MESTRE" | "PLAYER";
 
 export function LoginPage() {
 	const { setSystem } = useThemeContext();
-	const { login } = useAuth();
+    const { login, user } = useAuth();
 	const navigate = useNavigate();
     const [selectedSystem, setSelectedSystem] = useState<SystemThemeKey | null>(null);
 
@@ -25,13 +25,15 @@ export function LoginPage() {
 	const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        setSystem("neutral");
-    }, []);
+        if (!user) {
+            setSystem("neutral");
+        }
+    }, [user]);
 
 	function handleSystemChange(event: React.ChangeEvent<HTMLSelectElement>) {
 		const systemKey = event.target.value as SystemThemeKey;
         setSelectedSystem(systemKey);
-        setSystem(systemKey); // aplica o tema
+        setSystem(systemKey);
 	}
 
 	async function handleSubmit(event: FormEvent) {
@@ -53,7 +55,6 @@ export function LoginPage() {
 		try {
 			const loggedUser = await login(email, senha);
 
-			// VALIDAR TIPO REAL x TIPO SELECIONADO
 			if (loggedUser.tipo !== userType) {
 				if (loggedUser.tipo === "MESTRE") {
 					setError(
@@ -65,12 +66,7 @@ export function LoginPage() {
 				return;
 			}
 
-			// REDIRECIONAR
-			if (loggedUser.tipo === "MESTRE") {
-				navigate("/mestre");
-			} else {
-				navigate("/player");
-			}
+			navigate("/campanhas");
 		} catch (err: unknown) {
 			const message =
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,11 +81,9 @@ export function LoginPage() {
 	return (
 		<div className="login-page">
 			<div className="login-card">
-				{/* <h1 className="login-title">SISTEMA RPG LOGIN</h1> */}
 
 				<img src={Logo} alt="Logo do Sistema RPG" className="login-logo" />
 
-				{/* Radio interativo com segurança */}
 				<div className="login-user-type">
 					<label className="radio-option">
 						<input

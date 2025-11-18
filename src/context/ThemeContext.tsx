@@ -17,10 +17,15 @@ interface ThemeContextValue {
 export const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-    const [system, setSystem] = useState<SystemThemeKey>("neutral");
+
+    const [system, setSystem] = useState<SystemThemeKey>(() => {
+        const saved = localStorage.getItem("theme_system") as SystemThemeKey | null;
+        return saved ?? "neutral";
+    });
 
     useEffect(() => {
         applyTheme(systemThemes[system]);
+        localStorage.setItem("theme_system", system);
     }, [system]);
 
     function changeSystem(theme: SystemThemeKey) {
