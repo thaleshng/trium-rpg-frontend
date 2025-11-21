@@ -8,15 +8,18 @@ import { useNavigate } from "react-router-dom";
 
 import type { SystemThemeKey } from "../../theme/themes";
 
-import Logo from "../../assets/logo2.png";
+import Logo from "../../assets/logo.png";
+import { LoadingButton } from "../../components/UI/LoadingButton/LoadingButton";
 
 type UserType = "MESTRE" | "PLAYER";
 
 export function LoginPage() {
 	const { setSystem } = useThemeContext();
-    const { login, user, logout } = useAuth();
+	const { login, user, logout } = useAuth();
 	const navigate = useNavigate();
-    const [selectedSystem, setSelectedSystem] = useState<SystemThemeKey | null>(null);
+	const [selectedSystem, setSelectedSystem] = useState<SystemThemeKey | null>(
+		null
+	);
 
 	const [userType, setUserType] = useState<UserType | null>(null);
 	const [email, setEmail] = useState("");
@@ -24,11 +27,11 @@ export function LoginPage() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (!user) {
-            setSystem("neutral");
-        }
-    }, [user]);
+	useEffect(() => {
+		if (!user) {
+			setSystem("neutral");
+		}
+	}, [user]);
 
 	useEffect(() => {
 		if (user) {
@@ -39,8 +42,8 @@ export function LoginPage() {
 
 	function handleSystemChange(event: React.ChangeEvent<HTMLSelectElement>) {
 		const systemKey = event.target.value as SystemThemeKey;
-        setSelectedSystem(systemKey);
-        setSystem(systemKey);
+		setSelectedSystem(systemKey);
+		setSystem(systemKey);
 	}
 
 	async function handleSubmit(event: FormEvent) {
@@ -62,37 +65,31 @@ export function LoginPage() {
 		try {
 			const loggedUser = await login(email, senha);
 
-			// --- ERRO DE TIPO DE USUÁRIO ---
 			if (loggedUser.tipo !== userType) {
 				if (loggedUser.tipo === "MESTRE") {
-					// mensagem igual ao print 2
-					setError("Você é Mestre. Selecione 'Entrar como MESTRE'.");
+					setError(
+						"Este usuário está cadastrado como MESTRE. Acesse utilizando a opção 'Entrar como MESTRE'."
+					);
 				} else {
-					setError("Você é Player. Não pode entrar como Mestre.");
+					setError(
+						"Este usuário está cadastrado como PLAYER. Não é possível acessar como Mestre."
+					);
 				}
 
-				return; // <- aqui pode usar return normalmente
+				return;
 			}
 
-			// --- LOGIN OK ---
 			navigate("/campanhas");
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
-
-			// --- SENHA ERRADA / CREDENCIAIS INVÁLIDAS ----
 			if (err?.response?.status === 401) {
 				setError("Erro ao fazer login. Verifique suas credenciais.");
-			}
-			// --- ERRO COM MENSAGEM DA API ---
-			else if (err?.response?.data?.message) {
+			} else if (err?.response?.data?.message) {
 				setError(err.response.data.message);
-			}
-			// --- ERRO GENÉRICO ---
-			else {
+			} else {
 				setError("Erro ao fazer login. Tente novamente.");
 			}
-
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -101,8 +98,11 @@ export function LoginPage() {
 	return (
 		<div className="login-page">
 			<div className="login-card">
-
-				<img src={Logo} alt="Logo do Sistema RPG" className="login-logo" />
+				<img
+					src={Logo}
+					alt="Logo do Sistema RPG"
+					className="login-logo"
+				/>
 
 				<div className="login-user-type">
 					<label className="radio-option">
@@ -113,7 +113,10 @@ export function LoginPage() {
 							checked={userType === "MESTRE"}
 							onChange={() => setUserType("MESTRE")}
 						/>
-						<span>Entrar como <span className="type-color">MESTRE</span></span>
+						<span>
+							Entrar como{" "}
+							<span className="type-color">MESTRE</span>
+						</span>
 					</label>
 
 					<label className="radio-option">
@@ -124,7 +127,10 @@ export function LoginPage() {
 							checked={userType === "PLAYER"}
 							onChange={() => setUserType("PLAYER")}
 						/>
-						<span>Entrar como <span className="type-color">PLAYER</span></span>
+						<span>
+							Entrar como{" "}
+							<span className="type-color">PLAYER</span>
+						</span>
 					</label>
 				</div>
 
@@ -132,22 +138,21 @@ export function LoginPage() {
 					<div className="form-group">
 						<label htmlFor="system">Selecione o sistema:</label>
 						<select
-                            id="system"
-                            className="input"
-                            defaultValue=""
-                            onChange={handleSystemChange}
-                        >
-                            <option value="" disabled>
-                            </option>
+							id="system"
+							className="input"
+							defaultValue=""
+							onChange={handleSystemChange}
+						>
+							<option value="" disabled></option>
 
-                            <option value="ORDEM_PARANORMAL">
-                                Ordem Paranormal
-                            </option>
+							<option value="ORDEM_PARANORMAL">
+								Ordem Paranormal
+							</option>
 
-                            <option value="DND">
-                                Dungeons & Dragons (D&D)
-                            </option>
-                        </select>
+							<option value="DND">
+								Dungeons & Dragons (D&D)
+							</option>
+						</select>
 					</div>
 
 					<div className="form-group">
@@ -178,13 +183,13 @@ export function LoginPage() {
 
 					{error && <p className="error-text">{error}</p>}
 
-					<button
+					<LoadingButton
 						type="submit"
+						loading={isSubmitting}
 						className="primary-button"
-						disabled={isSubmitting}
 					>
-						{isSubmitting ? "Entrando..." : "ENTRAR"}
-					</button>
+						ENTRAR
+					</LoadingButton>
 				</form>
 
 				<p className="login-footer">© RPG SYSTEM — 2025</p>

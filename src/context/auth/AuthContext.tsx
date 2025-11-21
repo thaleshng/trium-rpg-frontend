@@ -1,83 +1,77 @@
-// src/context/AuthContext.tsx
-
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import { api } from "../../services/api";
 import type { User } from "../../types/User";
+import { LoadingScreen } from "../../components/UI/LoadingScreen/LoadingScreen";
 
 interface AuthContextValue {
-	user: User | null;
-	token: string | null;
-	loading: boolean;
-	login: (email: string, senha: string) => Promise<User>; // <-- retorna User
-	logout: () => void;
+    user: User | null;
+    token: string | null;
+    loading: boolean;
+    login: (email: string, senha: string) => Promise<User>;
+    logout: () => void;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const AuthContext = createContext<AuthContextValue | undefined>(
-	undefined
-);
+export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-	const [token, setToken] = useState<string | null>(() => {
-		return localStorage.getItem("auth_token");
-	});
 
-	const [user, setUser] = useState<User | null>(() => {
-		const saved = localStorage.getItem("auth_user");
-		return saved ? JSON.parse(saved) : null;
-	});
+    const [loading, setLoading] = useState(true); // <-- loading REAL
+    const [user, setUser] = useState<User | null>(null);
+    const [token, setToken] = useState<string | null>(null);
+    useEffect(() => {
+        const savedToken = localStorage.getItem("auth_token");
+        const savedUser = localStorage.getItem("auth_user");
 
-	// loading é derivado
-	const loading = token === null && user === null;
+        if (savedToken && savedUser) {
+            try {
+                const parsed = JSON.parse(savedUser);
 
-	useEffect(() => {
-		if (token) {
-			api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-		} else {
-			delete api.defaults.headers.common["Authorization"];
-		}
-	}, [token]);
+                // eslint-disable-next-line react-hooks/set-state-in-effect
+                setToken(savedToken);
+                setUser(parsed);
 
-	// -------- LOGIN --------
-	async function login(email: string, senha: string): Promise<User> {
-		const response = await api.post("/api/v1/auth/login", {
-			email,
-			senha
-		});
+                api.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
+            } catch {
+                localStorage.removeItem("auth_user");
+                localStorage.removeItem("auth_token");
+            }
+        }
 
-		const { token, user } = response.data;
+        setLoading(false);
+    }, []);
 
-		setToken(token);
-		setUser(user);
+    async function login(email: string, senha: string): Promise<User> {
+        const response = await api.post("/api/v1/auth/login", { email, senha });
 
-		localStorage.setItem("auth_token", token);
-		localStorage.setItem("auth_user", JSON.stringify(user));
+        const { token, user } = response.data;
 
-		api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        setToken(token);
+        setUser(user);
 
-		return user; // <-- AQUI ESTÁ A MÁGICA
-	}
+        localStorage.setItem("auth_token", token);
+        localStorage.setItem("auth_user", JSON.stringify(user));
 
-	// -------- LOGOUT --------
-	function logout() {
-		setToken(null);
-		setUser(null);
-		localStorage.removeItem("auth_token");
-		localStorage.removeItem("auth_user");
-		delete api.defaults.headers.common["Authorization"];
-	}
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-	return (
-		<AuthContext.Provider
-			value={{
-				user,
-				token,
-				loading,
-				login,
-				logout
-			}}
-		>
-			{children}
-		</AuthContext.Provider>
-	);
+        return user;
+    }
+
+    function logout() {
+        setToken(null);
+        setUser(null);
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("auth_user");
+        delete api.defaults.headers.common["Authorization"];
+    }
+
+    if (loading) {
+        return <LoadingScreen />;
+    }
+
+    return (
+        <AuthContext.Provider value={{ user, token, loading, login, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }

@@ -3,4 +3,5 @@ export interface User {
     nome: string;
     email: string;
     tipo: "MESTRE" | "PLAYER";
+    token: string;
 }
