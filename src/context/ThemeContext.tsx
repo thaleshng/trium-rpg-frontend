@@ -2,9 +2,10 @@ import {
     createContext,
     useEffect,
     useState,
-    type ReactNode
+    type ReactNode,
 } from "react";
 
+import { useLocation } from "react-router-dom";
 import { applyTheme, systemThemes } from "../theme/themes";
 import type { SystemThemeKey } from "../theme/themes";
 
@@ -17,10 +18,22 @@ interface ThemeContextValue {
 export const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
+    const location = useLocation();
+
+    const isHome = location.pathname === "/" || location.pathname === "/login";
+
+    const saved = localStorage.getItem("theme_system") as SystemThemeKey | null;
 
     const [system, setSystem] = useState<SystemThemeKey>(() => {
-        const saved = localStorage.getItem("theme_system") as SystemThemeKey | null;
-        return saved ?? "neutral";
+        if (isHome) {
+            return "neutral";
+        }
+
+        if (saved && saved !== "neutral") {
+            return saved;
+        }
+
+        return "ORDEM_PARANORMAL";
     });
 
     useEffect(() => {

@@ -1,0 +1,76 @@
+.campanhas-container {
+    width: 90%;
+    max-width: 1280px;
+    margin: 120px auto 40px;
+    padding: 32px;
+
+    background: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    backdrop-filter: blur(12px);
+
+    animation: fadeIn 0.4s ease;
+}
+
+.campanhas-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+    color: var(--accent-color);
+}
+
+.btn-criar {
+    background: var(--accent-color);
+    color: var(--text-color);
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    padding: 12px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 32px;
+
+    transition: all 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-criar:hover {
+    box-shadow: 0 0 12px var(--accent-color);
+}
+
+.campanhas-empty-message {
+    padding: 20px;
+    margin: 20px 0;
+    font-size: 18px;
+    color: var(--muted-text-color);
+    text-align: center;
+    opacity: 0.9;
+}
+
+.campanhas-grid {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+
+    gap: 24px;
+
+    width: 100%;
+}
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+        filter: blur(4px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
