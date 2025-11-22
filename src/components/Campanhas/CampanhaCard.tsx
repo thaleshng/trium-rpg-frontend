@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import type { Campanha } from "../../types/Campanha";
 import { Trash2 } from "lucide-react";
 
-import "./Campanhas.css";
+import "./CampanhaCard.css";
 
 interface Props {
     campanha: Campanha;
@@ -26,7 +26,7 @@ export function CampanhaCard({ campanha, userType, onDelete }: Props) {
     return (
         <div
             className="campanha-card"
-            onClick={() => navigate(`/campanhas/${campanha.id}`)}
+            onClick={() => navigate(`/campanhas/${campanha.id}`, { state: { campanha } })}
         >
             {podeExcluir && (
                 <div className="card-actions">

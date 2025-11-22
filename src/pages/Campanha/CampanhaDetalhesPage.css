@@ -1,0 +1,120 @@
+.campanha-detalhes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.campanha-detalhes-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.campanhas-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.campanha-detalhes-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr);
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.campanha-card-detalhes,
+.campanha-missoes-card {
+    background: var(--card-bg-color);
+    border-radius: 16px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+}
+
+/* ===============================
+   RESPONSIVIDADE - MOBILE < 800px
+   =============================== */
+@media (max-width: 800px) {
+
+    .campanha-detalhes-container {
+        gap: 12px;
+        padding: 15px 12px;
+    }
+
+    .campanha-detalhes-header {
+        gap: 6px;
+    }
+
+    .campanhas-title {
+        font-size: 24px;
+        margin-top: 4px;
+    }
+
+    .campanha-detalhes-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    .campanha-card-detalhes,
+    .campanha-missoes-card {
+        width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+
+    .campanha-card-detalhes {
+        overflow: visible !important;
+    }
+
+    .campanha-missoes-card {
+        max-height: 420px;
+        overflow-y: auto;
+    }
+
+    .campanha-info-view p {
+        left: 0;
+        font-size: 14px;
+    }
+
+    .campanha-info-view p strong {
+        font-size: 15px;
+        left: 0;
+    }
+
+    .campanha-card-header h2,
+    .campanha-participantes-header h2,
+    .campanha-missoes-header h2 {
+        font-size: 18px;
+    }
+
+    .campanha-participante-item {
+        left: 0;
+    }
+
+    .btn-remove-player {
+        right: 0;
+    }
+
+    .campanha-missao-item {
+        padding: 16px;
+        gap: 10px;
+    }
+
+    .campanha-missao-info h3 {
+        font-size: 16px;
+    }
+
+    .btn-link,
+    .edit-btn {
+        transform: scale(0.9);
+    }
+
+    .back-button {
+        margin-bottom: 4px;
+    }
+
+    .btn-criar-missao {
+        padding: 4px;
+        font-size: 14px;
+    }
+}
