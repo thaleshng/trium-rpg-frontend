@@ -1,0 +1,103 @@
+.campanha-missoes-card {
+    height: 515px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--card-bg-color);
+    border-radius: 16px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+}
+
+.campanha-missoes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.campanha-missoes-card h2 {
+    color: var(--accent-color);
+    position: relative;
+    top: -5px;
+}
+
+.btn-criar-missao {
+    margin: 0;
+}
+
+.campanha-missoes-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.campanha-missoes-vazio {
+    opacity: 0.7;
+    font-style: italic;
+    margin-top: 8px;
+    color: var(--muted-text-color);
+}
+
+.campanha-missao-item {
+    background: rgba(20, 24, 44, 0.8);
+    border: 2px solid var(--border-color);
+    border-radius: 18px;
+    padding: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+
+    cursor: pointer;
+    transition: 0.25s ease;
+    position: relative;
+}
+
+.campanha-missao-item:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-color);
+}
+
+.campanha-missao-info h3 {
+    margin: 0 0 6px;
+    color: var(--primary-color);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.campanha-missao-info p {
+    color: var(--muted-text-color);
+    font-size: 14px;
+    margin: 0;
+}
+
+.card-actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.campanha-missao-item:hover .card-actions {
+    opacity: 1;
+}
+
+.action-btn {
+    padding: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--muted-text-color);
+    transition: 0.2s;
+}
+
+.action-btn.delete:hover {
+    color: #ff4d4d;
+}

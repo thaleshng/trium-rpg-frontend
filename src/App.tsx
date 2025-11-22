@@ -4,6 +4,7 @@ import { PrivateRoute } from "./router/PrivateRoute";
 import { AppLayout } from "./layout/AppLayout";
 import { CampanhasPage } from "./pages/Campanha/CampanhasPage";
 import { CampanhaDetalhesPage } from "./pages/Campanha/CampanhaDetalhesPage";
+import { MissaoDetalhesPage } from "./pages/Missao/MissaoDetalhesPage";
 
 export default function App() {
   return (
@@ -27,6 +28,17 @@ export default function App() {
           <PrivateRoute>
             <AppLayout>
               <CampanhaDetalhesPage />
+            </AppLayout>
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/missao/:id"
+        element={
+          <PrivateRoute>
+            <AppLayout>
+              <MissaoDetalhesPage />
             </AppLayout>
           </PrivateRoute>
         }

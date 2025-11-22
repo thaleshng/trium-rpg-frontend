@@ -1,39 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { api } from "../../services/api";
-import type { Campanha, SistemaRPG } from "../../types/Campanha";
-import "./ModalCriarCampanha.css";
+import "./ModalCriarMissao.css";
 import { X } from "lucide-react";
-import type { SystemThemeKey } from "../../theme/themes";
 import { LoadingButton } from "../UI/LoadingButton/LoadingButton";
 
 interface Props {
     open: boolean;
     onClose: () => void;
-    onCreated: (campanha: Campanha) => void;
-    sistemaBloqueado: SystemThemeKey;
+    onCreated: (missao: any) => void;
+    campanhaId: string;
 }
 
-export function ModalCriarCampanha({ open, onClose, onCreated, sistemaBloqueado }: Props) {
-
-    const defaultSistema: SistemaRPG =
-        sistemaBloqueado === "ORDEM_PARANORMAL" ? "ORDEM_PARANORMAL" :
-        sistemaBloqueado === "DND" ? "DND" :
-        "ORDEM_PARANORMAL";
-
+export function ModalCriarMissao({ open, onClose, onCreated, campanhaId }: Props) {
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
     const [loading, setLoading] = useState(false);
-    const [sistema, setSistema] = useState<SistemaRPG>(defaultSistema);
-
     const [erro, setErro] = useState<string | null>(null);
 
     useEffect(() => {
-        setSistema(
-            sistemaBloqueado === "ORDEM_PARANORMAL" ? "ORDEM_PARANORMAL" :
-            sistemaBloqueado === "DND" ? "DND" :
-            "ORDEM_PARANORMAL"
-        );
-    }, [sistemaBloqueado]);
+        if (open) {
+            setNome("");
+            setDescricao("");
+            setErro(null);
+        }
+    }, [open]);
 
     if (!open) return null;
 
@@ -42,29 +33,26 @@ export function ModalCriarCampanha({ open, onClose, onCreated, sistemaBloqueado 
         setErro(null);
 
         if (!nome.trim()) {
-            setErro("O nome da campanha não pode ser vazio.");
+            setErro("O nome da missão não pode ser vazio.");
             return;
         }
 
-        setLoading(true);
-
         try {
-            const response = await api.post("/api/v1/campanhas", {
+            setLoading(true);
+
+            const response = await api.post("/api/v1/missoes", {
                 nome,
                 descricao,
-                sistema,
+                campanhaId
             });
 
             onCreated(response.data);
-            onClose();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onClose(); 
         } catch (err: any) {
-            console.error("Erro ao criar campanha:", err);
-
             if (err.response?.status === 409) {
-                setErro("Já existe uma campanha com esse nome.");
+                setErro("Já existe uma missão com esse nome.");
             } else {
-                setErro("Erro inesperado ao criar campanha.");
+                setErro("Erro inesperado ao criar missão.");
             }
         } finally {
             setLoading(false);
@@ -74,16 +62,16 @@ export function ModalCriarCampanha({ open, onClose, onCreated, sistemaBloqueado 
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                
+
                 <button className="modal-close" onClick={onClose}>
                     <X size={22} />
                 </button>
 
-                <h2>Criar Nova Campanha</h2>
+                <h2>Criar Missão</h2>
 
                 <form onSubmit={handleSubmit} className="modal-form">
                     <label>
-                        Nome da campanha
+                        Nome da missão
                         <input
                             value={nome}
                             onChange={(e) => setNome(e.target.value)}
@@ -91,7 +79,7 @@ export function ModalCriarCampanha({ open, onClose, onCreated, sistemaBloqueado 
                     </label>
 
                     {erro && (
-                        <p style={{ color: "#ff6b6b", fontSize: "14px", marginTop: "-10px" }}>
+                        <p className="modal-error">
                             {erro}
                         </p>
                     )}
@@ -104,24 +92,12 @@ export function ModalCriarCampanha({ open, onClose, onCreated, sistemaBloqueado 
                         />
                     </label>
 
-                    <label>
-                        Sistema
-                        <input 
-                            value={
-                                sistema === "ORDEM_PARANORMAL"
-                                    ? "Ordem Paranormal"
-                                    : "D&D"
-                            }
-                            disabled
-                        />
-                    </label>
-
                     <LoadingButton
                         type="submit"
                         loading={loading}
                         className="loading-button"
                     >
-                        Criar Campanha
+                        Criar Missão
                     </LoadingButton>
                 </form>
             </div>

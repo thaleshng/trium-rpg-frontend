@@ -1,0 +1,23 @@
+.back-button {
+    background: transparent;
+    border: none;
+    color: var(--muted-text-color);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 6px;
+
+    margin-bottom: 20px;
+    padding: 4px 0;
+
+    transition: 0.2s ease;
+}
+
+.back-button:hover {
+    color: var(--accent-color);
+    transform: translateX(-3px);
+}

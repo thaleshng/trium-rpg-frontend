@@ -186,7 +186,7 @@ export function LoginPage() {
 					<LoadingButton
 						type="submit"
 						loading={isSubmitting}
-						className="primary-button"
+						className="loading-button"
 					>
 						ENTRAR
 					</LoadingButton>
