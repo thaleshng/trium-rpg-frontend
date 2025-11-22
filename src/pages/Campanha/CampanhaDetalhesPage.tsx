@@ -111,6 +111,7 @@ export function CampanhaDetalhesPage() {
     async function handleSubmitCampanha(e: React.FormEvent) {
         e.preventDefault();
         if (!isMestre) return;
+        if (!campanha) return;
 
         try {
             setSaving(true);
@@ -134,6 +135,7 @@ export function CampanhaDetalhesPage() {
     async function handleAddPlayer(id: string) {
         try {
             setSaving(true);
+            if (!campanha) return;
 
             await api.post(`/api/v1/campanhas/${campanha.id}/participantes`, { playerId: id });
 
@@ -150,6 +152,7 @@ export function CampanhaDetalhesPage() {
     async function handleRemovePlayer(id: string) {
         try {
             setSaving(true);
+            if (!campanha) return;
 
             await api.delete(`/api/v1/campanhas/${campanha.id}/participantes/${id}`);
 
