@@ -1,0 +1,278 @@
+.missao-info-card {
+    height: 515px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--card-bg-color);
+    border-radius: 16px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+}
+
+.missao-info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.missao-info-header h2 {
+    color: var(--accent-color);
+}
+
+.edit-btn {
+    color: var(--muted-text-color);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.edit-btn:hover {
+    color: var(--accent-color);
+}
+
+.missao-form-edicao {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input {
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: rgba(15, 23, 42, 0.7);
+    padding: 10px 12px;
+    color: var(--text-color);
+    font-size: 14px;
+    outline: none;
+}
+
+.input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, .4);
+}
+
+.missao-info-view {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-left: 6px;
+}
+
+.missao-info-view p {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 15px;
+    position: relative;
+    left: 15px;
+    color: var(--text-color);
+}
+
+.missao-info-view p:nth-child(2) {
+    color: var(--muted-text-color);
+    font-style: italic;
+}
+
+.missao-info-view p strong {
+    color: var(--primary-color);
+    left: -15px;
+    position: relative;
+}
+
+.descricao-missao {
+    color: var(--muted-text-color);
+    font-style: italic;
+}
+
+.missao-divider {
+    border: none;
+    height: 1px;
+    background: var(--border-color);
+    margin: 16px 0;
+}
+
+.missao-personagens-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+.missao-personagens-header h2 {
+    color: var(--accent-color);
+}
+
+.btn-link {
+    color: var(--muted-text-color);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-link:hover {
+    color: var(--accent-color);
+}
+
+.missao-personagens-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.missao-personagem-item {
+    border-radius: 8px;
+    position: relative;
+    left: 21px;
+    display: flex;
+    gap: 5px;
+}
+
+.missao-personagem-item .personagem-nome {
+    color: var(--muted-text-color);
+}
+
+.missao-personagem-item .personagem-player {
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.missao-personagem-item.vazio {
+    opacity: .7;
+    font-style: italic;
+    color: var(--muted-text-color);
+}
+
+.missao-personagem-item.censurado {
+    filter: blur(4px);
+    opacity: .5;
+    transition: 0.2s;
+    user-select: none;
+}
+
+.btn-remove-personagem {
+    color: var(--muted-text-color);
+    cursor: pointer;
+    position: relative;
+    top: 2px;
+    right: 21px;
+    transition: .2s;
+}
+
+.btn-remove-personagem:hover {
+    color: var(--accent-color);
+}
+
+.missao-card-disponiveis {
+    margin-top: 16px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+
+.missao-card-disponiveis h3 {
+    margin: 0 0 12px;
+    font-size: 16px;
+    color: var(--accent-color);
+}
+
+.missao-card-disponiveis .vazio {
+    font-style: italic;
+    opacity: .7;
+}
+
+.missao-lista-disponiveis {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.missao-item-disponivel {
+    background: rgba(15, 23, 42, .8);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-add-personagem {
+    color: var(--muted-text-color);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-add-personagem:hover {
+    color: var(--accent-color);
+}
+
+@media (max-width: 320px) {
+
+    .missao-info-card {
+        padding: 14px;
+        height: auto;
+    }
+
+    .missao-info-header h2 {
+        font-size: 16px;
+    }
+
+    .missao-info-view p {
+        left: 0;
+        font-size: 13px;
+    }
+
+    .missao-info-view p strong {
+        left: 0;
+        font-size: 14px;
+    }
+
+    .descricao-missao {
+        font-size: 13px;
+    }
+
+    .missao-personagens-header h2 {
+        font-size: 16px;
+    }
+
+    .missao-personagem-item {
+        left: 0;
+        gap: 3px;
+        font-size: 13px;
+    }
+
+    .personagem-nome {
+        font-size: 13px;
+    }
+
+    .personagem-player {
+        font-size: 13px;
+    }
+
+    .edit-btn svg,
+    .btn-link svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .missao-personagens-lista {
+        gap: 6px;
+    }
+
+    .missao-divider {
+        margin: 12px 0;
+    }
+}

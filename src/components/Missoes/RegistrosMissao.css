@@ -1,0 +1,50 @@
+.missao-acesso-card {
+    height: 515px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    background: var(--card-bg-color);
+    border-radius: 16px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.missao-acesso-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.missao-acesso-card h2 {
+    color: var(--accent-color);
+    margin: 0;
+    position: relative;
+}
+
+.missao-acesso-item {
+    width: 100%;
+    padding: 18px 20px;
+
+    background: rgba(20, 24, 44, 0.8);
+    border: 2px solid var(--border-color);
+    border-radius: 18px;
+
+    color: var(--primary-color);
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.missao-acesso-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}

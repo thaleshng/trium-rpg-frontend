@@ -5,6 +5,7 @@ import { AppLayout } from "./layout/AppLayout";
 import { CampanhasPage } from "./pages/Campanha/CampanhasPage";
 import { CampanhaDetalhesPage } from "./pages/Campanha/CampanhaDetalhesPage";
 import { MissaoDetalhesPage } from "./pages/Missao/MissaoDetalhesPage";
+import { LocaisPage } from "./pages/Locais/LocaisPage";
 
 export default function App() {
   return (
@@ -42,6 +43,17 @@ export default function App() {
             </AppLayout>
           </PrivateRoute>
         }
+      />
+
+      <Route
+          path="/missao/:id/locais"
+          element={
+            <PrivateRoute>
+              <AppLayout>
+                <LocaisPage />
+              </AppLayout>
+            </PrivateRoute>
+          }
       />
 
       <Route path="*" element={<Navigate to="/" />} />

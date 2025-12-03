@@ -1,0 +1,66 @@
+.missao-container {
+    width: 90%;
+    max-width: 1280px;
+    margin: 120px auto 40px;
+    padding: 32px;
+
+    background: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    backdrop-filter: blur(12px);
+
+    animation: fadeIn 0.4s ease;
+}
+
+.missao-detalhes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.missao-detalhes-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.missao-detalhes-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.missao-detalhes-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr);
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.missao-info-card,
+.missao-acesso-card {
+    background: var(--card-bg-color);
+    border-radius: 16px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+}
+
+@media (max-width: 800px) {
+
+    .missao-detalhes-container {
+        gap: 12px;
+        padding: 15px 12px;
+    }
+
+    .missao-detalhes-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .missao-info-card,
+    .missao-acesso-card {
+        width: 100%;
+        height: auto;
+        max-height: none;
+    }
+}
