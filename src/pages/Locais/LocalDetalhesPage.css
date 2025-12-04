@@ -1,0 +1,44 @@
+/* A raiz da página */
+.local-detalhes-page {
+    height: 85vh;
+    width: 100%;
+    padding: 24px; /* padding elegante nos quatro lados */
+    margin-top: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+
+    overflow: hidden; /* remove qualquer scroll vertical */
+}
+
+/* O card/branco central */
+.local-detalhes-container {
+    background: #ffffff;
+    width: 100%;
+    max-width: 1100px; /* limite para não ficar esticado demais */
+    height: 100%;
+
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 32px;
+    box-sizing: border-box;
+}
+
+/* O texto */
+.local-detalhes-page p {
+    color: var(--muted-text-color);
+    opacity: 0.8;
+    font-style: italic;
+    cursor: pointer;
+    font-size: 16px;
+    max-width: 700px;
+    text-align: center;
+    line-height: 1.5;
+}
