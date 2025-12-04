@@ -6,6 +6,7 @@ import { CampanhasPage } from "./pages/Campanha/CampanhasPage";
 import { CampanhaDetalhesPage } from "./pages/Campanha/CampanhaDetalhesPage";
 import { MissaoDetalhesPage } from "./pages/Missao/MissaoDetalhesPage";
 import { LocaisPage } from "./pages/Locais/LocaisPage";
+import { LocalDetalhesPage } from "./pages/Locais/LocalDetalhesPage";
 
 export default function App() {
   return (
@@ -46,15 +47,26 @@ export default function App() {
       />
 
       <Route
-          path="/missao/:id/locais"
-          element={
-            <PrivateRoute>
-              <AppLayout>
-                <LocaisPage />
-              </AppLayout>
-            </PrivateRoute>
-          }
+        path="/missao/:id/locais"
+        element={
+          <PrivateRoute>
+            <AppLayout>
+              <LocaisPage />
+            </AppLayout>
+          </PrivateRoute>
+        }
       />
+
+      <Route
+        path="/missao/:id/locais/:localId"
+        element={
+          <PrivateRoute>
+            <AppLayout>
+              <LocalDetalhesPage />
+            </AppLayout>
+          </PrivateRoute>
+        }
+    />
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
