@@ -1,44 +1,116 @@
-/* A raiz da página */
 .local-detalhes-page {
-    height: 85vh;
+    height: 86vh;
     width: 100%;
-    padding: 24px; /* padding elegante nos quatro lados */
     margin-top: 72px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: #ffffff;
-
-    overflow: hidden; /* remove qualquer scroll vertical */
+    background-color: var(--card-bg-color);
+    overflow: hidden;
 }
 
-/* O card/branco central */
-.local-detalhes-container {
-    background: #ffffff;
-    width: 100%;
-    max-width: 1100px; /* limite para não ficar esticado demais */
-    height: 100%;
+.local-detalhes-page.sem-mapa {
+    background-color: var(--card-bg-color);
+}
 
-    border-radius: 20px;
+.local-detalhes-page.com-mapa {
+    background-color: transparent;
+}
+
+.mapa-viewport {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.mapa-canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform-origin: center center;
+    will-change: transform;
+
+    cursor: grab;
+}
+
+.mapa-viewport:active {
+    cursor: grabbing;
+}
+
+.mapa-imagem {
+    width: auto;
+    height: auto;
+
+    max-width: none;
+    max-height: none;
+
+    display: block;
+
+    user-select: none;
+    pointer-events: none;
+}
+
+.local-detalhes-page.modal-open {
+    pointer-events: none;
+}
+
+.local-detalhes-page.modal-open .local-info-overlay {
+    pointer-events: auto;
+}
+
+.local-mapa-vazio {
+    color: var(--muted-text-color);
+    font-style: italic;
+    text-align: center;
+    max-width: 300px;
+}
+
+.local-detalhes-link {
+    color: var(--accent-color);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.local-detalhes-link:hover {
+    text-decoration: none;
+}
+
+.back-button {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 20;
+}
+
+.local-mobile-block {
+    height: 86vh;
+    width: 100%;
+    margin-top: 72px;
+
+    background: var(--card-bg-color);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 32px;
-    box-sizing: border-box;
+    position: relative;
 }
 
-/* O texto */
-.local-detalhes-page p {
-    color: var(--muted-text-color);
-    opacity: 0.8;
-    font-style: italic;
-    cursor: pointer;
-    font-size: 16px;
-    max-width: 700px;
+.local-mobile-message {
+    max-width: 420px;
+    padding: 24px;
     text-align: center;
-    line-height: 1.5;
+
+    color: var(--muted-text-color);
+    font-size: 15px;
+    line-height: 1.6;
 }

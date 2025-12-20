@@ -47,7 +47,12 @@ export function MissaoLocaisCard({
                     {locais.map((local: any) => (
                         <li
                             key={local.id}
-                            className="local-item"
+                            className={`local-item ${local.mapaUrl ? "com-mapa" : ""}`}
+                            style={
+                                local.mapaUrl
+                                    ? { backgroundImage: `url(${local.mapaUrl})` }
+                                    : undefined
+                            }
                             onClick={() => handleOpenLocal(local.id)}
                         >
 

@@ -54,6 +54,35 @@
     border-color: var(--accent-color);
 }
 
+.local-item.com-mapa {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.local-item > * {
+    position: relative;
+    z-index: 1;
+}
+
+.local-item.com-mapa:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 0 1px rgba(255, 80, 80, 0.4);
+}
+
+.local-item.com-mapa::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: rgba(10, 10, 20, 0.65);
+    backdrop-filter: blur(4px);
+
+    border-radius: 18px;
+    z-index: 0;
+}
+
+
 .local-vis-btn {
     background: none;
     border: none;
