@@ -1,0 +1,235 @@
+.local-info-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 999;
+}
+
+.local-info-modal {
+    background: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+
+    width: 520px;
+    max-width: calc(100vw - 32px);
+
+    padding: 28px 32px;
+    position: relative;
+
+    animation: zoomIn 0.25s ease;
+}
+
+.local-form-edicao {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.local-info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.local-info-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--muted-text-color);
+    transition: 0.2s;
+}
+
+.close-btn:hover {
+    color: var(--accent-color);
+}
+
+.local-info-content {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.local-info-view {
+    display: flex;
+    justify-content: space-between;
+}
+
+.local-info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.local-info-column p {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+    margin-left: 16px;
+}
+
+.local-info-column p:last-child {
+    color: var(--muted-text-color);
+    font-style: italic;
+}
+
+.local-info-view span {
+    font-weight: 600;
+    color: var(--primary-color);
+    position: relative;
+    margin-left: -16px;
+    font-style: normal;
+}
+
+.edit-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--muted-text-color);
+    transition: 0.2s;
+    align-self: flex-start;
+    position: relative;
+    top: 5px;
+}
+
+.edit-btn:hover {
+    color: var(--accent-color);
+}
+
+.local-mapa-section {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.local-mapa-section h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.mapa-preview-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.local-mapa-preview {
+    width: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    display: block;
+}
+
+.mapa-nome-arquivo {
+    color: var(--muted-text-color);
+    font-style: italic;
+    align-self: center;
+}
+
+.mapa-nome-arquivo span {
+    color: var(--primary-color);
+    font-style: normal;
+    font-weight: 600;
+}
+
+.mapa-actions-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    display: flex;
+    gap: 8px;
+
+    padding: 6px;
+    border-radius: 10px;
+
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+
+    z-index: 2;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.mapa-preview-wrapper:hover .mapa-actions-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mapa-action-btn {
+    background: transparent;
+    border: none;
+
+    color: var(--text-color);
+    cursor: pointer;
+
+    padding: 6px;
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.mapa-action-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+}
+
+.mapa-action-btn.danger {
+    color: #fecaca;
+}
+
+.mapa-action-btn.danger:hover {
+    background: rgba(239, 68, 68, 0.25);
+}
+
+.editing-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.editing-actions .loading-button,
+.editing-actions .cancel-btn {
+    flex: 1;
+}
+
+.mapa-vazio {
+    font-style: italic;
+    color: var(--muted-text-color);
+    opacity: 0.7;
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,38 @@
+.map-toolbar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+
+    display: flex;
+    gap: 8px;
+}
+
+.map-toolbar-btn {
+    background: var(--accent-color);
+    color: var(--text-color);
+
+    border: none;
+    border-radius: 10px;
+
+    padding: 10px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.3s ease;
+}
+
+.map-toolbar-btn:hover {
+    box-shadow: 0 0 12px var(--accent-color);
+}
+
+.map-toolbar-btn.danger {
+    background: var(--accent-color);
+}
+
+.map-toolbar-btn.danger:hover {
+    box-shadow: 0 0 12px var(--accent-color);
+}
