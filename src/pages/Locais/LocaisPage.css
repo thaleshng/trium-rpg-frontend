@@ -23,7 +23,6 @@
     font-size: 32px;
     font-weight: 700;
     color: var(--accent-color);
-    margin-top: 15px;
 }
 
 @media (min-width: 850px) {

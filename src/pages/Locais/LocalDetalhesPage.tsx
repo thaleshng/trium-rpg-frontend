@@ -5,10 +5,13 @@ import { api } from "../../services/api";
 import { useAuth } from "../../context/auth/useAuth";
 import { MapToolbar } from "../../components/Map/MapToolbar";
 import type { Local } from "../../types/Local";
+import type { PontoInteresse } from "../../types/PontoInteresse";
+import { PontosInteresseModal } from "../../components/Map/PontosInteresseModal";
 import { LocalInfoModal } from "../../components/Map/LocalInfoModal";
 import { FeedbackModal } from "../../components/UI/FeedbackModal/FeedbackModal";
 import { BackButton } from "../../components/UI/BackButton/BackButton";
 import { LoadingScreen } from "../../components/UI/LoadingScreen/LoadingScreen";
+import { PontoMarker } from "../../components/Map/PontoMarker";
 
 export function LocalDetalhesPage() {
     const { localId } = useParams<{ localId: string }>();
@@ -32,6 +35,12 @@ export function LocalDetalhesPage() {
     const [error, setError] = useState<string | null>(null);
     const [isMobile, setIsMobile] = useState(false);
 
+    const [pontos, setPontos] = useState<PontoInteresse[]>([]);
+    const [openPontos, setOpenPontos] = useState(false);
+    const [editingPontoId, setEditingPontoId] = useState<string | null>(null);
+    const [draftPonto, setDraftPonto] = useState<PontoInteresse | null>(null);
+    const [panLocked, setPanLocked] = useState(false);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -46,6 +55,16 @@ export function LocalDetalhesPage() {
 
         if (localId) carregarLocal();
     }, [localId]);
+
+    useEffect(() => {
+        if (!localId) return;
+
+        api
+            .get(`/api/v1/pontos/local/${localId}`)
+            .then((res) => setPontos(res.data))
+            .catch(() => {});
+    }, [localId]);
+
 
     useEffect(() => {
         if (!feedback) return;
@@ -64,7 +83,7 @@ export function LocalDetalhesPage() {
         if (!el) return;
 
         const handler = (e: WheelEvent) => {
-            if (openInfo) return;
+            if (openInfo || editingPontoId) return;
 
             e.preventDefault();
 
@@ -156,7 +175,7 @@ export function LocalDetalhesPage() {
     }
 
     function onMouseDown(e: React.MouseEvent) {
-        if (openInfo) return;
+        if (openInfo || panLocked) return;
         setDragging(true);
         dragStart.current = {
             x: e.clientX - offset.x,
@@ -240,6 +259,71 @@ export function LocalDetalhesPage() {
         );
     }
 
+    async function handleCreatePonto(
+        data: {
+            nome: string;
+            descricao?: string | null;
+            localId: string;
+            x: number;
+            y: number;
+            size: number;
+        },
+        file?: File
+    ) {
+        const { data: ponto } = await api.post("/api/v1/pontos", {
+            nome: data.nome,
+            descricao: data.descricao,
+            localId: data.localId,
+            x: data.x,
+            y: data.y,
+            size: data.size,
+            rotation: 0
+        });
+
+        if (file) {
+            const formData = new FormData();
+            formData.append("imagem", file);
+
+            const { data: atualizado } = await api.post(
+                `/api/v1/pontos/${ponto.id}/imagem`,
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
+
+            setPontos((prev) => [...prev, atualizado]);
+            return atualizado;
+        }
+
+        setPontos((prev) => [...prev, ponto]);
+        return ponto;
+    }
+
+    async function handleDeletePonto(id: string) {
+        await api.delete(`/api/v1/pontos/${id}`);
+        setPontos((prev) => prev.filter((p) => p.id !== id));
+    }
+
+    async function handleConfirmPonto() {
+        if (!draftPonto) return;
+
+        const { id, x, y, size, rotation } = draftPonto;
+
+        await api.patch(`/api/v1/pontos/${id}`, {
+            x,
+            y,
+            size,
+            rotation
+        });
+
+        setPontos((prev) =>
+            prev.map((p) => (p.id === id ? draftPonto : p))
+        );
+
+        setEditingPontoId(null);
+        setDraftPonto(null);
+        setFeedback("Posição do ponto de interesse salva!");
+    }
+
     return (
         <div className={`local-detalhes-page ${local.mapaUrl ? "com-mapa" : "sem-mapa"} ${openInfo ? "modal-open" : ""}`}>
             <FeedbackModal
@@ -260,9 +344,8 @@ export function LocalDetalhesPage() {
             >
                 <BackButton />
                 <MapToolbar
-                    onOpenInfo={() => {
-                        setOpenInfo(true)
-                    }}
+                    onOpenInfo={() => setOpenInfo(true)}
+                    onOpenPontos={() => setOpenPontos(true)}
                 />
 
                 {local.mapaUrl ? (
@@ -280,14 +363,58 @@ export function LocalDetalhesPage() {
                             `,
                         }}
                     >
-                        <img
-                            ref={imageRef}
-                            src={local.mapaUrl}
-                            alt={`Mapa do local ${local.nome}`}
-                            className="mapa-imagem"
-                            onLoad={ajustarMapa}
-                            draggable={false}
-                        />
+                        <div className="mapa-conteudo">
+                            <img
+                                ref={imageRef}
+                                src={local.mapaUrl}
+                                alt={`Mapa do local ${local.nome}`}
+                                className="mapa-imagem"
+                                onLoad={ajustarMapa}
+                                draggable={false}
+                            />
+
+                            <div className="mapa-pontos-layer">
+                                {pontos.map((ponto) => {
+                                    const isEditing = isMestre && ponto.id === editingPontoId;
+
+                                    return (
+                                        <PontoMarker
+                                        key={ponto.id}
+                                        nome={ponto.nome}
+                                        x={isEditing ? draftPonto?.x ?? ponto.x : ponto.x}
+                                        y={isEditing ? draftPonto?.y ?? ponto.y : ponto.y}
+                                        size={isEditing ? draftPonto?.size ?? ponto.size : ponto.size}
+                                        rotation={
+                                            isEditing
+                                            ? draftPonto?.rotation ?? ponto.rotation ?? 0
+                                            : ponto.rotation ?? 0
+                                        }
+                                        imagemUrl={ponto.imagemUrl}
+                                        editing={isEditing}
+                                        onChange={(data) => {
+                                            setDraftPonto((prev) => {
+                                                if (!prev) return prev;
+                                                return { ...prev, ...data };
+                                            });
+                                        }}
+                                        onConfirm={handleConfirmPonto}
+                                        onCancel={() => {
+                                            setEditingPontoId(null);
+                                            setDraftPonto(null);
+                                        }}
+                                        onClick={() => {
+                                            if (!isMestre) return;
+
+                                            setEditingPontoId(ponto.id);
+                                            setDraftPonto({ ...ponto });
+                                        }}
+                                        onStartInteraction={() => setPanLocked(true)}
+                                        onEndInteraction={() => setPanLocked(false)}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     <p className="local-mapa-vazio">
@@ -326,6 +453,23 @@ export function LocalDetalhesPage() {
                     onSalvarInfo={handleSalvarInfo}
                     onTrocarMapa={handleUploadMapa}
                     onRemoverMapa={handleRemoverMapa}
+                />
+
+                <PontosInteresseModal
+                    open={openPontos}
+                    onClose={() => setOpenPontos(false)}
+                    localId={local.id}
+                    pontos={pontos}
+                    isMestre={isMestre}
+                    onCreate={handleCreatePonto}
+                    onDelete={handleDeletePonto}
+                    onCreatedAndEdit={(id) => {
+                        const ponto = pontos.find((p) => p.id === id);
+                        if (!ponto) return;
+
+                        setEditingPontoId(id);
+                        setDraftPonto({ ...ponto });
+                    }}
                 />
             </div>
         </div>
