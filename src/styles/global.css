@@ -44,6 +44,10 @@ body::before {
     pointer-events: none;
 }
 
+h1 {
+    margin-top: 15px;
+}
+
 #root {
     min-height: 100vh;
 }

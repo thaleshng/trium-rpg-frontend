@@ -57,8 +57,9 @@ export function LocalInfoModal({
 
     const nomeArquivoMapa =
         isMestre && local.mapaUrl
-            ? local.mapaUrl.split("/").pop()
+            ? formatarNomeArquivo(local.mapaUrl)
             : null;
+
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -95,6 +96,17 @@ export function LocalInfoModal({
             setSaving(false);
         }
     }
+
+    function formatarNomeArquivo(url: string) {
+        const filename = url.split("/").pop() ?? "";
+
+        return filename
+            .replace(/-[a-f0-9-]{36}(?=\.)/i, "")
+            .replace(/^[a-f0-9]+-|^\d+-/, "")
+            .replace(/_/g, " ");
+    }
+
+
 
     return (
         <div className="local-info-overlay">

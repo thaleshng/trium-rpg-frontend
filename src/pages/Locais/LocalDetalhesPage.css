@@ -56,6 +56,8 @@
 
     user-select: none;
     pointer-events: none;
+
+    z-index: 1;
 }
 
 .local-detalhes-page.modal-open {
@@ -114,3 +116,22 @@
     font-size: 15px;
     line-height: 1.6;
 }
+
+.mapa-pontos-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.mapa-pontos-layer > * {
+    pointer-events: auto;
+}
+
+.mapa-conteudo {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+}
+
+
+
